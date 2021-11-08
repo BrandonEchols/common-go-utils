@@ -1,4 +1,4 @@
-# A Collection Of Comms Integration Common Go Utilities
+# A Collection Of Common Go Utilities
 
 ## Purpose of this module
 This module should contain the classes that are used for web-based-services that will be hosting API's of some kind. 

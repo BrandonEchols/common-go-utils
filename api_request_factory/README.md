@@ -17,7 +17,7 @@ func main() {
    	//Peripherals
    	var config common.IConfigGetter
    	hrf := hrf.GetAPIRequestFactory(&http.Client{}, config)
-   	my_result := common.MakeCommsResult(config)
+   	my_result := common.MakeCommonResult(config)
    
    
    	//The Simplest version

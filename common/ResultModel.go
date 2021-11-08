@@ -1,21 +1,3 @@
-/**
- * Copyright 2017 InsideSales.com Inc.
- * All Rights Reserved.
- *
- * NOTICE: All information contained herein is the property of InsideSales.com, Inc. and its suppliers, if
- * any. The intellectual and technical concepts contained herein are proprietary and are protected by
- * trade secret or copyright law, and may be covered by U.S. and foreign patents and patents pending.
- * Dissemination of this information or reproduction of this material is strictly forbidden without prior
- * written permission from InsideSales.com Inc.
- *
- * Requests for permission should be addressed to the Legal Department, InsideSales.com,
- * 1712 South East Bay Blvd. Provo, UT 84606.
- *
- * The software and any accompanying documentation are provided "as is" with no warranty.
- * InsideSales.com, Inc. shall not be liable for direct, indirect, special, incidental, consequential, or other
- * damages, under any theory of liability.
- */
-
 package common
 
 import (
@@ -28,7 +10,7 @@ import (
 )
 
 //Implements IResult
-type commsResult struct {
+type commonResult struct {
 	debug                bool                   //True if the result should log Debug level logs
 	beautify_logs        bool                   //True if the result should beautify the logs
 	errors_only          bool                   //True if the result should only print results that contain errors
@@ -47,13 +29,13 @@ type asyncLogPackage struct {
 }
 
 /*
-	MakeCommsResult is the factory method for generating a commsResult for use.
+	MakeCommonResult is the factory method for generating a commonResult for use.
 	@params
 		configs IConfigGetter A configuration getter to retrieve the logging level
 	@returns
-		IResult A pointer to a commsResult (which implements IResult)
+		IResult A pointer to a commonResult (which implements IResult)
 */
-func MakeCommsResult(configs IConfigGetter) IResult {
+func MakeCommonResult(configs IConfigGetter) IResult {
 	debug := false
 	beautify_logs := false
 	errors_only := false
@@ -69,7 +51,7 @@ func MakeCommsResult(configs IConfigGetter) IResult {
 	if log_level == "ERRORS_ONLY" {
 		errors_only = true
 	}
-	return &commsResult{
+	return &commonResult{
 		debug:         debug,
 		beautify_logs: beautify_logs,
 		errors_only:   errors_only,
@@ -77,19 +59,19 @@ func MakeCommsResult(configs IConfigGetter) IResult {
 }
 
 /*
-	MakeDefaultCommsResult is used for testing purposes or to avoid having to set the logging level. Instead, it just
+	MakeDefaultCommonResult is used for testing purposes or to avoid having to set the logging level. Instead, it just
 	set's the logging level to debug.
 */
-func MakeDefaultCommsResult() IResult {
-	return &commsResult{
+func MakeDefaultCommonResult() IResult {
+	return &commonResult{
 		debug:         true,
 		beautify_logs: false,
 	}
 }
 
-func (this *commsResult) GetChild() IResult {
+func (this *commonResult) GetChild() IResult {
 	channel := make(chan asyncLogPackage)
-	child := &commsResult{
+	child := &commonResult{
 		debug:         this.debug,
 		beautify_logs: this.beautify_logs,
 		parent:        channel,
@@ -105,22 +87,22 @@ func (this *commsResult) GetChild() IResult {
 }
 
 //WasSuccessful Returns a boolean that's true if everything went well, false if there was an error
-func (this *commsResult) WasSuccessful() bool {
+func (this *commonResult) WasSuccessful() bool {
 	return this.was_successful
 }
 
 //Succeed set's the results was_successful flag to true
-func (this *commsResult) Succeed() {
+func (this *commonResult) Succeed() {
 	this.was_successful = true
 }
 
 //Fail set's the results was_successful flag to false
-func (this *commsResult) Fail() {
+func (this *commonResult) Fail() {
 	this.was_successful = false
 }
 
 //Implements error interface
-func (this *commsResult) Error() string {
+func (this *commonResult) Error() string {
 	if this.messages == nil || len(this.messages) == 0 {
 		return ""
 	}
@@ -133,7 +115,7 @@ func (this *commsResult) Error() string {
 	@params
 		r IResult The result from the function below to merge with this one
 */
-func (this *commsResult) MergeWithResult(r IResult) {
+func (this *commonResult) MergeWithResult(r IResult) {
 	if r == nil {
 		return
 	}
@@ -150,37 +132,37 @@ func (this *commsResult) MergeWithResult(r IResult) {
 	this.status_code = r.GetStatusCode()
 }
 
-func (this *commsResult) GetChildren() []chan asyncLogPackage {
+func (this *commonResult) GetChildren() []chan asyncLogPackage {
 	return this.children
 }
 
 //GetMessages Returns the []string messages in this result
-func (this *commsResult) GetMessages() []string {
+func (this *commonResult) GetMessages() []string {
 	return this.messages
 }
 
 //GetMessages Returns the current logging level. This goes up if Infof or Errorf are called.
-func (this *commsResult) GetLogLevel() int {
+func (this *commonResult) GetLogLevel() int {
 	return this.log_importance_level
 }
 
 //Get's status code
-func (this *commsResult) GetStatusCode() int {
+func (this *commonResult) GetStatusCode() int {
 	return this.status_code
 }
 
 //Set's status code
-func (this *commsResult) SetStatusCode(code int) {
+func (this *commonResult) SetStatusCode(code int) {
 	this.status_code = code
 }
 
 //Get the reponse error to show to the user
-func (this *commsResult) GetResponseMessage() string {
+func (this *commonResult) GetResponseMessage() string {
 	return this.response_message
 }
 
 //Set the reponse error to show to the user
-func (this *commsResult) SetResponseMessage(msg string) {
+func (this *commonResult) SetResponseMessage(msg string) {
 	this.response_message = msg
 }
 
@@ -194,13 +176,13 @@ func (this *commsResult) SetResponseMessage(msg string) {
 
 	0[Info] Message: I'm in the main function. My name is bob
  	Timestamp: 2017-11-02 13:58:18.5391358 -0600 MDT
- 	Caller: C:/Users/brandon.echols/Documents/Coding/Go/src/playground/old stuff/CommsResult.go::18
+ 	Caller: C:/Users/brandon.echols/Documents/Coding/Go/src/playground/old stuff/CommonResult.go::18
 
 	1[Info] Message: Hello There. I'm AnotherFunction
  	Timestamp: 2017-11-02 13:58:18.5401363 -0600 MDT
- 	Caller: C:/Users/brandon.echols/Documents/Coding/Go/src/playground/old stuff/CommsResult.go::31
+ 	Caller: C:/Users/brandon.echols/Documents/Coding/Go/src/playground/old stuff/CommonResult.go::31
 */
-func (this *commsResult) Flush() {
+func (this *commonResult) Flush() {
 	go func() { //In case we have to wait for children or parents, let the calling function exit
 		my_logs_length := len(this.messages)
 
@@ -271,7 +253,7 @@ func (this *commsResult) Flush() {
 		template string The formattable template string of the message
 		args ...interface{} A list of arguments to inject into the template
 */
-func (this *commsResult) Debugf(template string, args ...interface{}) {
+func (this *commonResult) Debugf(template string, args ...interface{}) {
 	if !this.debug {
 		return
 	}
@@ -280,7 +262,7 @@ func (this *commsResult) Debugf(template string, args ...interface{}) {
 	this.addLog("[Debug]", original_message)
 }
 
-func (this *commsResult) Infof(template string, args ...interface{}) {
+func (this *commonResult) Infof(template string, args ...interface{}) {
 	if this.log_importance_level < 1 {
 		this.log_importance_level = 1
 	}
@@ -288,7 +270,7 @@ func (this *commsResult) Infof(template string, args ...interface{}) {
 	this.addLog("[Info]", original_message)
 }
 
-func (this *commsResult) Errorf(template string, args ...interface{}) {
+func (this *commonResult) Errorf(template string, args ...interface{}) {
 	if this.log_importance_level < 2 {
 		this.log_importance_level = 2
 	}
@@ -298,7 +280,7 @@ func (this *commsResult) Errorf(template string, args ...interface{}) {
 }
 
 //addLog is a helper function for the *f methods.
-func (this *commsResult) addLog(header string, org_msg string) {
+func (this *commonResult) addLog(header string, org_msg string) {
 	_, file, line, _ := runtime.Caller(2)
 	_, fileName := path.Split(file)
 
@@ -324,7 +306,7 @@ func (this *commsResult) addLog(header string, org_msg string) {
 		template string The formattable template string of the message
 		args ...interface{} A list of arguments to inject into the template
 */
-func (this *commsResult) DebugMessagef(template string, args ...interface{}) {
+func (this *commonResult) DebugMessagef(template string, args ...interface{}) {
 	if !this.debug {
 		return
 	}

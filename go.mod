@@ -1,6 +1,6 @@
-module bitbucket.xant.tech/ci/ci-go-utils
+module github.com/BrandonEchols/common-go-utils
 
-go 1.14
+go 1.16
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -12,5 +12,4 @@ require (
 	go.opentelemetry.io/otel/exporters/trace/jaeger v0.11.0
 	go.opentelemetry.io/otel/sdk v0.11.0
 	go.uber.org/zap v1.13.0
-	google.golang.org/grpc v1.31.0
 )
