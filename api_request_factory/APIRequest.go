@@ -1,28 +1,11 @@
-/**
- * Copyright 2018-2019 InsideSales.com Inc.
- * All Rights Reserved.
- *
- * NOTICE: All information contained herein is the property of InsideSales.com, Inc. and its suppliers, if
- * any. The intellectual and technical concepts contained herein are proprietary and are protected by
- * trade secret or copyright law, and may be covered by U.S. and foreign patents and patents pending.
- * Dissemination of this information or reproduction of this material is strictly forbidden without prior
- * written permission from InsideSales.com Inc.
- *
- * Requests for permission should be addressed to the Legal Department, InsideSales.com,
- * 1712 South East Bay Blvd. Provo, UT 84606.
- *
- * The software and any accompanying documentation are provided "as is" with no warranty.
- * InsideSales.com, Inc. shall not be liable for direct, indirect, special, incidental, consequential, or other
- * damages, under any theory of liability.
- */
 package api_request_factory
 
 import (
-	"bitbucket.xant.tech/ci/ci-go-utils/common"
-	common_routing "bitbucket.xant.tech/ci/ci-go-utils/routing"
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/BrandonEchols/common-go-utils/common"
+	common_routing "github.com/BrandonEchols/common-go-utils/routing"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -115,7 +98,7 @@ func (this *APIRequest) DoAsync(child common.IResult) {
 //Do is the launch point for the request. It will 'do' the request according to the data that has been set, see each
 //data field for more information
 func (this *APIRequest) Do() (result common.IResult) {
-	result = common.MakeCommsResult(this.config)
+	result = common.MakeCommonResult(this.config)
 	error_count := 0
 	result.Debugf("APIRequest.Do called for Method: %s, URL: %s", this.Method, this.Url)
 

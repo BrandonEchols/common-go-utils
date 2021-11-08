@@ -1,4 +1,4 @@
-# A Collection Of Comms Integration Common Go Utilities
+# A Collection Of Common Go Utilities
 
 ## Purpose of this module
 This module should contain the classes that are used in nearly every go micro-service. The following are descriptions of

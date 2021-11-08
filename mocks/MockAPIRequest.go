@@ -4,7 +4,7 @@
 package mocks
 
 import (
-	common "bitbucket.xant.tech/ci/ci-go-utils/common"
+	common "github.com/BrandonEchols/common-go-utils/common"
 	gomock "github.com/golang/mock/gomock"
 	http "net/http"
 	reflect "reflect"

@@ -4,9 +4,9 @@
 package mocks
 
 import (
-	api_request_factory "bitbucket.xant.tech/ci/ci-go-utils/api_request_factory"
-	common "bitbucket.xant.tech/ci/ci-go-utils/common"
 	context "context"
+	api_request_factory "github.com/BrandonEchols/common-go-utils/api_request_factory"
+	common "github.com/BrandonEchols/common-go-utils/common"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
